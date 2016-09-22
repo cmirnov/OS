@@ -7,7 +7,7 @@
 void getWord (char* str, int* i, char word[]){
 	for(; str[*i] && str[*i] == ' '; (*i)++){}
 	int j = 0;
-	for(; str[*i] && str[*i] != ' '; (*i)++, ++j){
+	for(; str[*i] && str[*i] != ' ' && str[*i] != '\n'; (*i)++, ++j){
 		word[j] = str[*i];
 	}
 	word[j] = '\0';
@@ -16,7 +16,7 @@ void getWord (char* str, int* i, char word[]){
 
 int parser(char* str, char listOfWords[255][255]){
 	int i = 0, j = 0;
-	for(;str[i]; ++j, ++i){
+	for(;str[i] && str[i] != '\n'; ++j, ++i){
 		getWord(str, &i, listOfWords[j]);
 	}
 	return j;
