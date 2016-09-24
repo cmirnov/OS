@@ -91,8 +91,10 @@
     </Configuration>
   </Settings>
   <VirtualDirectory Name="src">
+    <File Name="parser.h"/>
+    <File Name="execute.h"/>
+    <File Name="execute.c"/>
     <File Name="main.c"/>
     <File Name="parser.c"/>
-    <File Name="parser.h"/>
   </VirtualDirectory>
 </CodeLite_Project>

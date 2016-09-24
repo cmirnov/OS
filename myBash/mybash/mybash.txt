@@ -1,1 +1,1 @@
-./Debug/main.c.o ./Debug/parser.c.o
+./Debug/execute.c.o ./Debug/main.c.o ./Debug/parser.c.o

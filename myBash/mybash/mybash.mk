@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=kirill
-Date                   :=22/09/16
+Date                   :=24/09/16
 CodeLitePath           :="/home/kirill/.codelite"
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -60,7 +60,7 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/parser.c$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/execute.c$(ObjectSuffix) $(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/parser.c$(ObjectSuffix) 
 
 
 
@@ -91,6 +91,14 @@ PreBuild:
 ##
 ## Objects
 ##
+$(IntermediateDirectory)/execute.c$(ObjectSuffix): execute.c $(IntermediateDirectory)/execute.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/home/kirill/OS/myBash/mybash/execute.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/execute.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/execute.c$(DependSuffix): execute.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/execute.c$(ObjectSuffix) -MF$(IntermediateDirectory)/execute.c$(DependSuffix) -MM "execute.c"
+
+$(IntermediateDirectory)/execute.c$(PreprocessSuffix): execute.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/execute.c$(PreprocessSuffix) "execute.c"
+
 $(IntermediateDirectory)/main.c$(ObjectSuffix): main.c $(IntermediateDirectory)/main.c$(DependSuffix)
 	$(CC) $(SourceSwitch) "/home/kirill/OS/myBash/mybash/main.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/main.c$(DependSuffix): main.c
