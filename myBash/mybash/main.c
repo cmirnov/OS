@@ -5,7 +5,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <fcntl.h>
-//#include "execute.h"
 #include "parser.h"
 
 #define MAXN 255
@@ -31,43 +30,45 @@ int main(){
 		int pipefd[2];
 		for (i; i < numOfComds; ++i){
 			if (isUsePipe == 1){
-				isUsePipe--;
+				isUsePipe = 0;
 			}
 			if (isUsePipe == 2){
-				isUsePipe--;
-			}
-			if (listOfComds[i].isPipe){
-				int correctPipe = pipe(pipefd);
-				isUsePipe = 2;
+				isUsePipe = 1;
 			}
 			
+			if (listOfComds[i].isPipe){
+				int corPipe = pipe(pipefd);
+				isUsePipe = 2;
+			}
 			pid_t pid = fork();
+			
 			int status = -1;
+			
 			if (pid == 0){
+				if (isUsePipe == 1){
+					dup2(pipefd[0], 0);
+					close(pipefd[0]);
+					isUsePipe = 0;
+				}
 				if (listOfComds[i].redirin){
 					int  in = open(listOfComds[i].strin, O_RDONLY);
 					dup2(in, 0);
 					close(in);
 				}
+				
 				if (listOfComds[i].redirout){
 					int  out = open(listOfComds[i].strout, O_RDWR| O_TRUNC | O_CREAT);
 					dup2(out, 1);
 					close(out);
-				}
-				if (isUsePipe == 1){
-					dup2(pipefd[0], 0);
-					close(pipefd[0]);
-					isUsePipe = 0;
 				}
 				if (isUsePipe == 2){
 					dup2(pipefd[1], 1);
 					close(pipefd[1]);
 					isUsePipe = 1;
 				}
+				
 				execvp(listOfComds[i].argv[0], listOfComds[i].argv);
-			}
-			else{
-				wait(&status);
+				_exit(&status);
 			}
 		}
 	}
