@@ -1,5 +1,5 @@
 #include <iostream>
-#include <queue>
+#include <list>
 
 #define end 0
 #define start 1
@@ -7,8 +7,8 @@
 
 using namespace std;
 
-queue < void (*)(int*) > proc;
-queue <int> argv;
+list < void (*)(int*) > proc;
+list <int> argv;
 
 void f0(int *argv){
 	string s = "abc";
@@ -45,31 +45,64 @@ void f4(int *argv){
 	return;
 }
 
-int main(){
-	proc.push(&f0);
-	argv.push(0);
-	proc.push(&f1);
-	argv.push(start);
-	proc.push(&f2);
-	argv.push(start);
-	proc.push(&f3);
-	argv.push(start);
-	proc.push(&f4);
-	argv.push(start);
-	proc.push(&f0);
-	argv.push(0);
-	
+
+void input(){
+		proc.push_back(&f0);
+		argv.push_back(0);
+		proc.push_back(&f1);
+		argv.push_back(start);
+		proc.push_back(&f2);
+		argv.push_back(start);
+		proc.push_back(&f3);
+		argv.push_back(start);
+		proc.push_back(&f4);
+		argv.push_back(start);
+		proc.push_back(&f0);
+		argv.push_back(0);
+}
+
+void fifo(){
 	while (!proc.empty()){
 		void (*temp_func)(int*);
 		temp_func = proc.front();
-		proc.pop();
+		proc.pop_front();
 		int temp_argv = argv.front();
-		argv.pop();
+		argv.pop_front();
 		temp_func(&temp_argv);
 		if (temp_argv){
-			proc.push(temp_func);
-			argv.push(temp_argv);
+			proc.push_back(temp_func);
+			argv.push_back(temp_argv);
 		}
+	}
+	return;
+}
+
+void filo(){
+	while (!proc.empty()){
+		void (*temp_func)(int*);
+		temp_func = proc.back();
+		proc.pop_back();
+		int temp_argv = argv.back();
+		argv.pop_back();
+		temp_func(&temp_argv);
+		if (temp_argv){
+			proc.push_back(temp_func);
+			argv.push_back(temp_argv);
+		}
+	}
+	return;
+}
+
+int main(){
+	input();
+	cout << "choose strategy:\n\t1: FIFO\n\t2: FILO\n";
+	int strat;
+	cin >> strat;
+	if (strat == 1){
+		fifo();
+	}
+	if (strat == 2){
+		filo();
 	}
 	return 0;
 }
