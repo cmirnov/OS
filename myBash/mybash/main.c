@@ -68,7 +68,7 @@ int main(){
 				}
 				
 				execvp(listOfComds[i].argv[0], listOfComds[i].argv);
-				_exit(&status);
+				//_exit(&status);
 			}
 		}
 	}
