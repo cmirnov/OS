@@ -79,6 +79,7 @@ void fifo(){
 
 void filo(){
 	while (!proc.empty()){
+		wait(1e4);
 		void (*temp_func)(int*);
 		temp_func = proc.back();
 		proc.pop_back();
