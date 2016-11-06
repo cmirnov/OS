@@ -117,7 +117,6 @@ int main(int argc, char *argv[]) {
 
 	assert(RAM_PARGE_CNT < 26);
 	for (int i = 0; i < RAM_PARGE_CNT; ++i) {
-		printf("%d\n", i);
 		memset(ram_base + i * PAGE_SIZE, 'a' + i, PAGE_SIZE);
 		addNewPage(i);
 	}
