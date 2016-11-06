@@ -70,9 +70,7 @@ char *findTarget(){
 void access_handler(int signal, siginfo_t *info, void *ctx) {
 	char *faulted_addr = info->si_addr;
 	char *faulted_page = page_align_down(info->si_addr);
-	static int count = 1;
-	count = 1 - count;
-	char *target_page = findTarget(); //ram_base + count * PAGE_SIZE;
+	char *target_page = findTarget(); 
 	fprintf(stderr, "%s: faulted_addr=%p faulted_page=%p target_page=%p\n", __func__, faulted_addr, faulted_page, target_page);
 	assert((vmem_base <= faulted_addr) && (faulted_addr < (vmem_base + VMEM_SIZE)));
 
