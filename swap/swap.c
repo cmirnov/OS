@@ -40,7 +40,6 @@ static char *page_align_up(char *mem) {
 struct Page{
 	int isUsed;
 	int lastExec;
-	char *addr;
 };
 
 struct Page schedule[RAM_PARGE_CNT];
@@ -63,7 +62,9 @@ char *findTarget(){
 			max = schedule[i].lastExec;
 			target = ram_base + i * PAGE_SIZE;
 		}
+		schedule[i].lastExec += schedule[i].isUsed;
 	}
+	schedule[(target - ram_base) / PAGE_SIZE].lastExec = 0;
 	return target;
 }
 
@@ -116,6 +117,7 @@ int main(int argc, char *argv[]) {
 
 	assert(RAM_PARGE_CNT < 26);
 	for (int i = 0; i < RAM_PARGE_CNT; ++i) {
+		printf("%d\n", i);
 		memset(ram_base + i * PAGE_SIZE, 'a' + i, PAGE_SIZE);
 		addNewPage(i);
 	}
