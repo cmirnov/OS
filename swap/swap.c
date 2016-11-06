@@ -44,13 +44,13 @@ struct Page{
 
 struct Page schedule[RAM_PARGE_CNT];
 
-void addNewPage(char *p){
-	schedule[(int)p].isUsed = 1;
+void addNewPage(int p){
+	schedule[p].isUsed = 1;
 	int i;
 	for (i = 0; i < RAM_PARGE_CNT; ++i){
 		schedule[i].lastExec += schedule[i].isUsed;
 	}
-	schedule[(int)p].isUsed = 1;
+	schedule[p].isUsed = 1;
 }
 
 char *findTarget(){
@@ -61,6 +61,11 @@ char *findTarget(){
 		if (schedule[i].isUsed && schedule[i].lastExec > max){
 			max = schedule[i].lastExec;
 			target = ram_base + i * PAGE_SIZE;
+		}
+		if (!schedule[i].isUsed){
+			max = 1 << 30;
+			target = ram_base + i * PAGE_SIZE;
+			schedule[i].isUsed = 1;
 		}
 		schedule[i].lastExec += schedule[i].isUsed;
 	}
